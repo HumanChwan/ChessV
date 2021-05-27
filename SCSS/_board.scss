@@ -1,0 +1,93 @@
+.board {
+    display: grid;
+    width: 50rem;
+    height: 50rem;
+    grid-template-columns: repeat(8, 1fr);
+    position: relative;
+}   
+.square {
+    width: calc(50rem/8 - 2px);
+    height: calc(50rem/8 - 2px);
+    border: 1px solid $border;
+    overflow: hidden;
+    position: relative;
+    &_light {
+        background: $light;
+    }
+    &_dark {
+        background: $dark;
+    }
+    &_selected {
+        background: rgb(207, 73, 118);
+    }
+    &__highlight {
+        display: none;
+        position: absolute;
+        &_regular {
+            background: palevioletred;
+            margin: 2.375rem auto;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+        }
+        &_piece {
+            display: block;
+            margin: -5% -5%;
+            width: 110%;
+            height: 110%;
+            border-radius: 50%;
+            background-color: transparent;
+            box-shadow: 
+            0 0 3px 5px rgb(219, 143, 169),
+            0 0 0 1rem palevioletred;
+        }
+        &_king {
+            display: block;
+            display: block;
+            margin: -5% -5%;
+            width: 110%;
+            height: 110%;
+            border-radius: 50%;
+            background-color: transparent;
+            box-shadow: 
+             0 0 3px 5px rgb(250, 125, 125),
+            0 0 0 1rem red;
+        }
+    }
+}
+.piece {
+    position: absolute;
+    width: calc(50rem/8 - 1px);
+    height: calc(50rem/8 - 1px);
+    transition: transform 450ms ease;
+}
+
+.file {
+    font-family: serif;
+    font-size: 1.125rem;
+    top: 5rem;
+    position: absolute;
+
+    &_dark {
+        color: rgb(23, 53, 93);
+    }
+
+    &_light {
+        color: rgb(236, 236, 236);
+    }
+}
+
+.rank {
+    font-family: serif;
+    font-size: 1.125rem;
+    left: 5.5rem;
+    position: absolute;
+
+    &_dark {
+        color: rgb(23, 53, 93);
+    }
+
+    &_light {
+        color: rgb(236, 236, 236);
+    }
+}

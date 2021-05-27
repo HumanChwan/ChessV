@@ -1,0 +1,128 @@
+html {
+  background-color: #222;
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.board {
+  display: -ms-grid;
+  display: grid;
+  width: 50rem;
+  height: 50rem;
+  -ms-grid-columns: (1fr)[8];
+      grid-template-columns: repeat(8, 1fr);
+  position: relative;
+}
+
+.square {
+  width: calc(50rem/8 - 2px);
+  height: calc(50rem/8 - 2px);
+  border: 1px solid #5f390d;
+  overflow: hidden;
+  position: relative;
+}
+
+.square_light {
+  background: #ececec;
+}
+
+.square_dark {
+  background: linear-gradient(135deg, #7f92ac, #17355d);
+}
+
+.square_selected {
+  background: #cf4976;
+}
+
+.square__highlight {
+  display: none;
+  position: absolute;
+}
+
+.square__highlight_regular {
+  background: palevioletred;
+  margin: 2.375rem auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.square__highlight_piece {
+  display: block;
+  margin: -5% -5%;
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  background-color: transparent;
+  -webkit-box-shadow: 0 0 3px 5px #db8fa9, 0 0 0 1rem palevioletred;
+          box-shadow: 0 0 3px 5px #db8fa9, 0 0 0 1rem palevioletred;
+}
+
+.square__highlight_king {
+  display: block;
+  display: block;
+  margin: -5% -5%;
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  background-color: transparent;
+  -webkit-box-shadow: 0 0 3px 5px #fa7d7d, 0 0 0 1rem red;
+          box-shadow: 0 0 3px 5px #fa7d7d, 0 0 0 1rem red;
+}
+
+.piece {
+  position: absolute;
+  width: calc(50rem/8 - 1px);
+  height: calc(50rem/8 - 1px);
+  -webkit-transition: -webkit-transform 450ms ease;
+  transition: -webkit-transform 450ms ease;
+  transition: transform 450ms ease;
+  transition: transform 450ms ease, -webkit-transform 450ms ease;
+}
+
+.file {
+  font-family: serif;
+  font-size: 1.125rem;
+  top: 5rem;
+  position: absolute;
+}
+
+.file_dark {
+  color: #17355d;
+}
+
+.file_light {
+  color: #ececec;
+}
+
+.rank {
+  font-family: serif;
+  font-size: 1.125rem;
+  left: 5.5rem;
+  position: absolute;
+}
+
+.rank_dark {
+  color: #17355d;
+}
+
+.rank_light {
+  color: #ececec;
+}
+/*# sourceMappingURL=style.css.map */
