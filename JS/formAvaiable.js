@@ -73,7 +73,8 @@ function moveOntoDirection(i, j, dir, depth) {
 
 function pawnMove(i, j) {
 	// do stuff
-	let attackDir = whiteToMove ? -1 : 1;
+	const attackDir = whiteToMove ? -1 : 1;
+	const pawnBase = whiteToMove ? 6 : 1;
 	let movesCategorized = [];
 	// left and right
 	const LnR = [-1, 1];
@@ -91,6 +92,9 @@ function pawnMove(i, j) {
 	// outOfBound Condition will never be met, bcz no pawn can exist at the opponent base rank
 	if (Board[i + attackDir][j] === ' ') {
 		movesCategorized.push([i + attackDir, j]);
+		if(i === pawnBase && Board[i+ 2*attackDir][j] === ' ') {
+			movesCategorized.push([i + 2*attackDir, j]);
+		} 
 	}
 	return movesCategorized;
 }

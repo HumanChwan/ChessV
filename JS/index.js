@@ -4,7 +4,7 @@ import { getPiece, isWhite } from './util.js';
 // import isDiscoveredCheck from './isDiscoveredCheck.js';
 const boardGrid = document.querySelector('.board');
 
-const FEN = 'rnbqkbnr/1pp2ppp/p2p4/4P3/8/4Q3/PPP1PPPP/RNB1KBNR';
+const FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 let chessMain = new Chess(FEN);
 
 function formPiece(piece, i, j) {
@@ -101,7 +101,10 @@ function move(i, j) {
 
 function capture(i, j) {
 	const piece = document.querySelector(`.piece[data-i="${i}"][data-j="${j}"]`);
-	piece.parentNode.removeChild(piece);
+	setTimeout(() => {
+		piece.parentNode.removeChild(piece);
+	}, 300);
+	
 }
 
 pieces.forEach((piece) => {

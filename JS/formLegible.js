@@ -122,23 +122,25 @@ function notKing(toCoor, fI, fJ) {
 	}
 
 	const unitVector = rawVector.map((cosine) => signum(cosine));
-
+	
 	let PossibleAttacker = ['Q'];
 	PossibleAttacker.push(unitVector[0] * unitVector[1] ? 'B' : 'R');
 
 	if (whiteToMove)
 		PossibleAttacker = PossibleAttacker.map((enemy) => enemy.toLowerCase());
 
-	let nI = kI + unitVector[0],
-		nJ = kJ + unitVector[1];
-	let depth = 8;
-	while (depth-- && ok(nI, nJ)) {
-		// if (!ok(sI, sJ)) return true;
+	let [nI, nJ] = [kI + unitVector[0], kJ + unitVector[1]];
+	while (ok(nI, nJ)) {
 		if (nI === i && nJ === j) return true;
-		if (nI === fI && nJ === fJ) continue;
-
-		if (PossibleAttacker.includes(Board[nI][nJ])) return false;
-
+		if (nI === fI && nJ === fJ){
+			nI += unitVector[0];
+			nJ += unitVector[1];
+			continue;
+		}	
+		if(Board[nI][nJ] !== ' ') {
+			if (PossibleAttacker.includes(Board[nI][nJ])) return false;
+			else break;
+		}
 		nI += unitVector[0];
 		nJ += unitVector[1];
 	}
