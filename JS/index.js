@@ -101,9 +101,11 @@ function move(i, j) {
 
 function capture(i, j) {
 	const piece = document.querySelector(`.piece[data-i="${i}"][data-j="${j}"]`);
+	piece.style.filter = `brightness(50%)`;
 	setTimeout(() => {
 		piece.parentNode.removeChild(piece);
-	}, 300);
+		selectedPiece.style.zIndex = 0;
+	}, 400);
 	
 }
 
@@ -115,6 +117,8 @@ pieces.forEach((piece) => {
 		// print(chessMain.whiteToMove);
 		if (chessMain.whiteToMove !== isWhite(piece.id)) {
 			if (presentSelectedMoves.some((coor) => coor[0] === i && coor[1] === j)) {
+				piece.style.zIndex = 0;
+				selectedPiece.style.zIndex = 1;
 				capture(i, j);
 				move(i, j);
 			}

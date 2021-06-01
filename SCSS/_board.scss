@@ -6,9 +6,8 @@
     position: relative;
 }   
 .square {
-    width: calc(50rem/8 - 2px);
-    height: calc(50rem/8 - 2px);
-    border: 1px solid $border;
+    width: 6.25rem;
+    height: 6.25rem;
     overflow: hidden;
     position: relative;
     &_light {
@@ -32,33 +31,32 @@
         }
         &_piece {
             display: block;
-            margin: -5% -5%;
-            width: 110%;
-            height: 110%;
+            margin: -0.125rem -0.125rem;
+            width: 6.5rem;
+            height: 6.5rem;
             border-radius: 50%;
             background-color: transparent;
             box-shadow: 
-            0 0 3px 5px rgb(219, 143, 169),
-            0 0 0 1rem palevioletred;
+            0 0 0 5px rgb(219, 143, 169),
+            0 0 0 2rem palevioletred;
         }
         &_king {
             display: block;
-            display: block;
-            margin: -5% -5%;
-            width: 110%;
-            height: 110%;
+            margin: -0.125rem -0.125rem;
+            width: 6.5rem;
+            height: 6.5rem;
             border-radius: 50%;
             background-color: transparent;
             box-shadow: 
-             0 0 3px 5px rgb(250, 125, 125),
+             0 0 0 5px rgb(250, 125, 125),
             0 0 0 1rem red;
         }
     }
 }
 .piece {
     position: absolute;
-    width: calc(50rem/8 - 1px);
-    height: calc(50rem/8 - 1px);
+    width: 6.25rem; // calc(6.25rem - 1px);
+    height: 6.25rem; // calc(6.25rem - 1px);
     transition: transform 450ms ease;
 }
 

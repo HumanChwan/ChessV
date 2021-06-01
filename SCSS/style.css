@@ -31,9 +31,8 @@ body {
 }
 
 .square {
-  width: calc(50rem/8 - 2px);
-  height: calc(50rem/8 - 2px);
-  border: 1px solid #5f390d;
+  width: 6.25rem;
+  height: 6.25rem;
   overflow: hidden;
   position: relative;
 }
@@ -65,31 +64,30 @@ body {
 
 .square__highlight_piece {
   display: block;
-  margin: -5% -5%;
-  width: 110%;
-  height: 110%;
+  margin: -0.125rem -0.125rem;
+  width: 6.5rem;
+  height: 6.5rem;
   border-radius: 50%;
   background-color: transparent;
-  -webkit-box-shadow: 0 0 3px 5px #db8fa9, 0 0 0 1rem palevioletred;
-          box-shadow: 0 0 3px 5px #db8fa9, 0 0 0 1rem palevioletred;
+  -webkit-box-shadow: 0 0 0 5px #db8fa9, 0 0 0 2rem palevioletred;
+          box-shadow: 0 0 0 5px #db8fa9, 0 0 0 2rem palevioletred;
 }
 
 .square__highlight_king {
   display: block;
-  display: block;
-  margin: -5% -5%;
-  width: 110%;
-  height: 110%;
+  margin: -0.125rem -0.125rem;
+  width: 6.5rem;
+  height: 6.5rem;
   border-radius: 50%;
   background-color: transparent;
-  -webkit-box-shadow: 0 0 3px 5px #fa7d7d, 0 0 0 1rem red;
-          box-shadow: 0 0 3px 5px #fa7d7d, 0 0 0 1rem red;
+  -webkit-box-shadow: 0 0 0 5px #fa7d7d, 0 0 0 1rem red;
+          box-shadow: 0 0 0 5px #fa7d7d, 0 0 0 1rem red;
 }
 
 .piece {
   position: absolute;
-  width: calc(50rem/8 - 1px);
-  height: calc(50rem/8 - 1px);
+  width: 6.25rem;
+  height: 6.25rem;
   -webkit-transition: -webkit-transform 450ms ease;
   transition: -webkit-transform 450ms ease;
   transition: transform 450ms ease;
