@@ -1,32 +1,37 @@
-import getAvailableMoves from './formAvaiable.js';
+import getAvailableMoves from './formAvailable.js';
 import { dirBishop, dirKing, dirKnight, dirRook } from './MoveDirections.js';
-import { ok, signum } from './util.js';
+import { isValid, signum } from './util.js';
 let Board;
 let whiteToMove;
 let possibleMoves;
 let KingData;
 let kI, kJ;
 
-export default function getLegibleMoves(newBoard, newKingData) {
+export default function getLegibleMoves(
+	newBoard,
+	newKingData,
+	enPassantSquare
+) {
 	Board = newBoard;
 	KingData = newKingData;
-	// console.log(KingData);
+
 	whiteToMove = KingData.isWhite;
-	possibleMoves = getAvailableMoves(Board, whiteToMove);
-	[kI, kJ] = [KingData.i, KingData.j];
-	// console.log(KingData);
+	possibleMoves = getAvailableMoves(
+		Board,
+		whiteToMove,
+		false,
+		enPassantSquare
+	);
+	kI = KingData.i;
+	kJ = KingData.j;
+
 	KingData.isChecked ? Protecc() : checkForPin();
 	return possibleMoves;
 }
 
-// const isSame = (A, B) => A[0] === B[0] && A[1] === B[1];
-
 function Protecc() {
-	// let legibleMoves = {};
-
 	for (const Coor in possibleMoves) {
 		const [i, j] = [parseInt(Coor[0]), parseInt(Coor[1])];
-		// legibleMoves[Coor] = [];
 		const piece = Board[i][j];
 		possibleMoves[Coor] = possibleMoves[Coor].filter((toCoor) => {
 			return piece.toLowerCase() !== 'k'
@@ -38,7 +43,6 @@ function Protecc() {
 
 function defenderMmnt(toCoor) {
 	const [i, j] = toCoor;
-	// console.log(KingData.CheckedBy);
 	for (let iter = 0; iter < KingData.CheckedBy.length; ++iter) {
 		const [nI, nJ] = KingData.CheckedBy[iter];
 		if (i === nI && j === nJ) continue;
@@ -63,7 +67,7 @@ function foundEnemy(enemies, dir, Tdepth, atPos) {
 	for (let x = 0; x < dir.length; ++x) {
 		let [nI, nJ] = [atPos[0] + dir[x][0], atPos[1] + dir[x][1]];
 		let depth = Tdepth;
-		while (depth-- && ok(nI, nJ)) {
+		while (depth-- && isValid(nI, nJ)) {
 			if (Board[nI][nJ] !== ' ') {
 				if (enemies.includes(Board[nI][nJ])) return true;
 				else break;
@@ -90,10 +94,10 @@ function selfProtecc(toCoor) {
 	if (foundEnemy([EnemyLine[1], EnemyLine[3]], dirRook, 8, toCoor))
 		return false;
 
-	const AttaccDir = whiteToMove ? -1 : 1;
+	const moveDirection = whiteToMove ? -1 : 1;
 	const dirP = [
-		[AttaccDir, -1],
-		[AttaccDir, 1],
+		[moveDirection, -1],
+		[moveDirection, 1],
 	];
 	if (foundEnemy([EnemyLine[4]], dirP, 1, toCoor)) return false;
 
@@ -122,7 +126,7 @@ function notKing(toCoor, fI, fJ) {
 	}
 
 	const unitVector = rawVector.map((cosine) => signum(cosine));
-	
+
 	let PossibleAttacker = ['Q'];
 	PossibleAttacker.push(unitVector[0] * unitVector[1] ? 'B' : 'R');
 
@@ -130,14 +134,14 @@ function notKing(toCoor, fI, fJ) {
 		PossibleAttacker = PossibleAttacker.map((enemy) => enemy.toLowerCase());
 
 	let [nI, nJ] = [kI + unitVector[0], kJ + unitVector[1]];
-	while (ok(nI, nJ)) {
+	while (isValid(nI, nJ)) {
 		if (nI === i && nJ === j) return true;
-		if (nI === fI && nJ === fJ){
+		if (nI === fI && nJ === fJ) {
 			nI += unitVector[0];
 			nJ += unitVector[1];
 			continue;
-		}	
-		if(Board[nI][nJ] !== ' ') {
+		}
+		if (Board[nI][nJ] !== ' ') {
 			if (PossibleAttacker.includes(Board[nI][nJ])) return false;
 			else break;
 		}

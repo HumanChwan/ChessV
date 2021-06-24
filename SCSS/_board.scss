@@ -1,91 +1,84 @@
 .board {
-    display: grid;
-    width: 50rem;
-    height: 50rem;
-    grid-template-columns: repeat(8, 1fr);
-    position: relative;
-}   
+	display: grid;
+	width: $width;
+	height: $height;
+	grid-template-columns: repeat(8, 1fr);
+	position: relative;
+}
 .square {
-    width: 6.25rem;
-    height: 6.25rem;
-    overflow: hidden;
-    position: relative;
-    &_light {
-        background: $light;
-    }
-    &_dark {
-        background: $dark;
-    }
-    &_selected {
-        background: rgb(207, 73, 118);
-    }
-    &__highlight {
-        display: none;
-        position: absolute;
-        &_regular {
-            background: palevioletred;
-            margin: 2.375rem auto;
-            width: 1.5rem;
-            height: 1.5rem;
-            border-radius: 50%;
-        }
-        &_piece {
-            display: block;
-            margin: -0.125rem -0.125rem;
-            width: 6.5rem;
-            height: 6.5rem;
-            border-radius: 50%;
-            background-color: transparent;
-            box-shadow: 
-            0 0 0 5px rgb(219, 143, 169),
-            0 0 0 2rem palevioletred;
-        }
-        &_king {
-            display: block;
-            margin: -0.125rem -0.125rem;
-            width: 6.5rem;
-            height: 6.5rem;
-            border-radius: 50%;
-            background-color: transparent;
-            box-shadow: 
-             0 0 0 5px rgb(250, 125, 125),
-            0 0 0 1rem red;
-        }
-    }
+	width: $sWidth;
+	height: $sHeight;
+	overflow: hidden;
+	position: relative;
+	&_light {
+		background: $light;
+	}
+	&_dark {
+		background: $dark;
+	}
+	&_selected {
+		background: rgb(207, 73, 118);
+	}
+	&__highlight {
+		display: none;
+		position: absolute;
+		&_regular {
+			background: palevioletred;
+			margin: 37.5% auto;
+			width: 25%;
+			height: 25%;
+			border-radius: 50%;
+		}
+		&_piece {
+			display: block;
+			width: 100%;
+			height: 100%;
+			background: radial-gradient(transparent 40%, palevioletred 100%);
+		}
+		&_king {
+			display: block;
+			width: 100%;
+			height: 100%;
+			background: radial-gradient(transparent 40%, red 100%);
+		}
+	}
 }
 .piece {
-    position: absolute;
-    width: 6.25rem; // calc(6.25rem - 1px);
-    height: 6.25rem; // calc(6.25rem - 1px);
-    transition: transform 450ms ease;
+	position: absolute;
+	width: 12.5%;
+	height: 12.5%;
+	transition: transform 350ms ease;
 }
 
 .file {
-    font-family: serif;
-    font-size: 1.125rem;
-    top: 5rem;
-    position: absolute;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: 2vh;
+	left: 0.25vh;
+	top: 7.5vh;
+	position: absolute;
 
-    &_dark {
-        color: rgb(23, 53, 93);
-    }
+	&_dark {
+		color: $darkSolid;
+	}
 
-    &_light {
-        color: rgb(236, 236, 236);
-    }
+	&_light {
+		color: $light;
+	}
 }
 
 .rank {
-    font-family: serif;
-    font-size: 1.125rem;
-    left: 5.5rem;
-    position: absolute;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: 2vh;
+	left: 8.75vh;
+	position: absolute;
 
-    &_dark {
-        color: rgb(23, 53, 93);
-    }
+	&_dark {
+		color: $darkSolid;
+	}
 
-    &_light {
-        color: rgb(236, 236, 236);
-    }
+	&_light {
+		color: $light;
+	}
 }

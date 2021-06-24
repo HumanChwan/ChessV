@@ -1,20 +1,28 @@
+import { Move } from './Classes/Move.js';
 import { dirBishop, dirKing, dirKnight, dirRook } from './MoveDirections.js';
-import { isWhite, ok } from './util.js';
+import {
+	isWhite,
+	matchCoordinates,
+	notationToCoordinates,
+	isValid,
+} from './util.js';
 
 let Board;
 let whiteToMove;
+let enPassantSquare;
 
 export default function getAvailableMoves(
 	newBoard,
 	inWhiteToMove,
-	specific = false
+	specific = false,
+	newenPassantSquare = '-'
 ) {
 	Board = newBoard;
 	whiteToMove = inWhiteToMove;
 	let moveAvailable = {};
-	// console.log(Board);
+	enPassantSquare = notationToCoordinates(newenPassantSquare);
 
-	function MoveAppend(i, j) {
+	function MovesAppend(i, j) {
 		switch (Board[i][j].toLowerCase()) {
 			case 'p':
 				return pawnMove(i, j);
@@ -32,14 +40,14 @@ export default function getAvailableMoves(
 	}
 
 	if (specific) {
-		return MoveAppend(specific[0], specific[1]);
+		return MovesAppend(specific[0], specific[1]);
 	}
 
 	for (let i = 0; i < 8; ++i) {
 		for (let j = 0; j < 8; ++j) {
 			if (Board[i][j] !== ' ' && whiteToMove === isWhite(Board[i][j])) {
 				// do stuff
-				moveAvailable[`${i}${j}`] = MoveAppend(i, j);
+				moveAvailable[`${i}${j}`] = MovesAppend(i, j);
 			}
 		}
 	}
@@ -54,14 +62,18 @@ function moveOntoDirection(i, j, dir, depth) {
 		let pI = i,
 			pJ = j;
 		while (depthIn--) {
-			if (!ok(pI + dir[x][0], pJ + dir[x][1])) break;
+			if (!isValid(pI + dir[x][0], pJ + dir[x][1])) break;
 			let atIJ = Board[pI + dir[x][0]][pJ + dir[x][1]];
 			if (atIJ === ' ') {
-				movesCategorized.push([pI + dir[x][0], pJ + dir[x][1]]);
+				movesCategorized.push(
+					new Move([pI + dir[x][0], pJ + dir[x][1]])
+				);
 			} else if (whiteToMove === isWhite(atIJ)) {
 				break;
 			} else {
-				movesCategorized.push([pI + dir[x][0], pJ + dir[x][1]]);
+				movesCategorized.push(
+					new Move([pI + dir[x][0], pJ + dir[x][1]], true)
+				);
 				break;
 			}
 			pI += dir[x][0];
@@ -72,29 +84,58 @@ function moveOntoDirection(i, j, dir, depth) {
 }
 
 function pawnMove(i, j) {
-	// do stuff
-	const attackDir = whiteToMove ? -1 : 1;
+	const moveDirection = whiteToMove ? -1 : 1;
 	const pawnBase = whiteToMove ? 6 : 1;
 	let movesCategorized = [];
 	// left and right
 	const LnR = [-1, 1];
 	for (let d = 0; d < 2; ++d) {
-		if (ok(i + attackDir, j + LnR[d])) {
+		if (isValid(i + moveDirection, j + LnR[d])) {
+			// Normal Capture
 			if (
-				Board[i + attackDir][j + LnR[d]] !== ' ' &&
-				isWhite(Board[i + attackDir][j + LnR[d]]) !== whiteToMove
+				Board[i + moveDirection][j + LnR[d]] !== ' ' &&
+				isWhite(Board[i + moveDirection][j + LnR[d]]) !== whiteToMove
 			) {
-				movesCategorized.push([i + attackDir, j + LnR[d]]);
+				movesCategorized.push(
+					new Move([i + moveDirection, j + LnR[d]], true, true)
+				);
+			}
+
+			// Enpassant Capture
+			if (
+				enPassantSquare &&
+				matchCoordinates(
+					[i + moveDirection, j + LnR[d]],
+					enPassantSquare
+				)
+			) {
+				movesCategorized.push(
+					new Move(
+						[i + moveDirection, j + LnR[d]],
+						true,
+						true,
+						false,
+						[i, j + LnR[d]]
+					)
+				);
 			}
 		}
 	}
 	// straight move
 	// outOfBound Condition will never be met, bcz no pawn can exist at the opponent base rank
-	if (Board[i + attackDir][j] === ' ') {
-		movesCategorized.push([i + attackDir, j]);
-		if(i === pawnBase && Board[i+ 2*attackDir][j] === ' ') {
-			movesCategorized.push([i + 2*attackDir, j]);
-		} 
+	if (Board[i + moveDirection][j] === ' ') {
+		// singleforwardMove
+		movesCategorized.push(new Move([i + moveDirection, j], false, true));
+
+		if (i === pawnBase && Board[i + 2 * moveDirection][j] === ' ') {
+			// formation of the enPassantSquare
+			movesCategorized.push(
+				new Move([i + 2 * moveDirection, j], false, true, [
+					i + moveDirection,
+					j,
+				])
+			);
+		}
 	}
 	return movesCategorized;
 }

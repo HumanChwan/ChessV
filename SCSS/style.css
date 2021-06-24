@@ -23,16 +23,16 @@ body {
 .board {
   display: -ms-grid;
   display: grid;
-  width: 50rem;
-  height: 50rem;
+  width: 40vw;
+  height: 40vw;
   -ms-grid-columns: (1fr)[8];
       grid-template-columns: repeat(8, 1fr);
   position: relative;
 }
 
 .square {
-  width: 6.25rem;
-  height: 6.25rem;
+  width: 5vw;
+  height: 5vw;
   overflow: hidden;
   position: relative;
 }
@@ -56,48 +56,41 @@ body {
 
 .square__highlight_regular {
   background: palevioletred;
-  margin: 2.375rem auto;
-  width: 1.5rem;
-  height: 1.5rem;
+  margin: 37.5% auto;
+  width: 25%;
+  height: 25%;
   border-radius: 50%;
 }
 
 .square__highlight_piece {
   display: block;
-  margin: -0.125rem -0.125rem;
-  width: 6.5rem;
-  height: 6.5rem;
-  border-radius: 50%;
-  background-color: transparent;
-  -webkit-box-shadow: 0 0 0 5px #db8fa9, 0 0 0 2rem palevioletred;
-          box-shadow: 0 0 0 5px #db8fa9, 0 0 0 2rem palevioletred;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(transparent 40%, palevioletred 100%);
 }
 
 .square__highlight_king {
   display: block;
-  margin: -0.125rem -0.125rem;
-  width: 6.5rem;
-  height: 6.5rem;
-  border-radius: 50%;
-  background-color: transparent;
-  -webkit-box-shadow: 0 0 0 5px #fa7d7d, 0 0 0 1rem red;
-          box-shadow: 0 0 0 5px #fa7d7d, 0 0 0 1rem red;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(transparent 40%, red 100%);
 }
 
 .piece {
   position: absolute;
-  width: 6.25rem;
-  height: 6.25rem;
-  -webkit-transition: -webkit-transform 450ms ease;
-  transition: -webkit-transform 450ms ease;
-  transition: transform 450ms ease;
-  transition: transform 450ms ease, -webkit-transform 450ms ease;
+  width: 12.5%;
+  height: 12.5%;
+  -webkit-transition: -webkit-transform 350ms ease;
+  transition: -webkit-transform 350ms ease;
+  transition: transform 350ms ease;
+  transition: transform 350ms ease, -webkit-transform 350ms ease;
 }
 
 .file {
-  font-family: serif;
-  font-size: 1.125rem;
-  top: 5rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 2vh;
+  left: 0.25vh;
+  top: 7.5vh;
   position: absolute;
 }
 
@@ -110,9 +103,9 @@ body {
 }
 
 .rank {
-  font-family: serif;
-  font-size: 1.125rem;
-  left: 5.5rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 2vh;
+  left: 8.75vh;
   position: absolute;
 }
 

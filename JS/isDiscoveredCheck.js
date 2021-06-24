@@ -1,4 +1,4 @@
-import { isWhite, ok, signum } from './util.js';
+import { isWhite, isValid, signum } from './util.js';
 
 let Board;
 let whiteToMove;
@@ -30,7 +30,7 @@ function findKingAttacker(BeelineDir, kingCoor) {
 	sI += BeelineDir[0];
 	sJ += BeelineDir[1];
 	let depth = 8;
-	while (depth-- && ok(sI, sJ)) {
+	while (depth-- && isValid(sI, sJ)) {
 		if (Board[sI][sJ] === ' ') {
 			sI += BeelineDir[0];
 			sJ += BeelineDir[1];

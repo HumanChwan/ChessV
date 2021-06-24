@@ -1,34 +1,12 @@
 // import getAvailableMoves from './formAvaiable.js';
-import getAvailableMoves from './formAvaiable.js';
-import getLegibleMoves from './formLegible.js';
-import isDiscoveredCheck from './isDiscoveredCheck.js';
-import { isWhite } from './util.js';
+import getAvailableMoves from '../formAvailable.js';
+import getLegibleMoves from '../formLegible.js';
+import isDiscoveredCheck from '../isDiscoveredCheck.js';
+import { isWhite, toggleWB } from '../util.js';
+import { King } from './King.js';
 
-export class King {
-	constructor(isWhite, I, J) {
-		this.i = I;
-		this.j = J;
-		this.isWhite = isWhite;
-		this.isChecked = false;
-		this.CheckedBy = [];
-	}
-
-	setNewCoordinates(i, j) {
-		this.i = i;
-		this.j = j;
-	}
-
-	setNull() {
-		this.isChecked = false;
-		this.CheckedBy = [];
-	}
-
-	checkAppend(i, j) {
-		this.isChecked = true;
-		this.CheckedBy.push([i, j]);
-	}
-}
-
+// FEN : rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR   w    KQkq     -     0        1
+//              BOARD                                  M     CR     En   Fifty  MoveCount
 export class Chess {
 	constructor(FEN) {
 		this.FEN = FEN;
@@ -41,7 +19,9 @@ export class Chess {
 	}
 
 	FENUpdate(formerRow, newRow) {
-		this.FEN = this.FEN.split('/')
+		const values = this.FEN.split(' ');
+		values[0] = values[0]
+			.split('/')
 			.map((r, i) => {
 				if ([formerRow, newRow].includes(i)) {
 					// return fresh
@@ -64,11 +44,13 @@ export class Chess {
 				return r;
 			})
 			.join('/');
-		// console.log(this.FEN);
+		values[1] = toggleWB(values[1]);
+		this.toggleMove();
 	}
 
 	formBoardAsArray() {
-		this.Board = this.FEN.split('/').map((row) => {
+		const values = this.FEN.split(' ');
+		this.Board = values[0].split('/').map((row) => {
 			let rowAssigned = Array(8).fill(' ');
 			let k = 0;
 			for (let i = 0; i < row.length; ++i) {
@@ -83,14 +65,10 @@ export class Chess {
 		});
 	}
 
-	setBoard(formerCoordinate, newCoordinates) {
-		const [fI, fJ] = formerCoordinate;
+	updateChess(formerCoordinate, newCoordinates) {
 		const [nI, nJ] = newCoordinates;
-		const piece = this.Board[fI][fJ];
+		const piece = this.Board[nI][nJ];
 		const Index = isWhite(piece) ? 0 : 1;
-
-		this.Board[nI][nJ] = piece;
-		this.Board[fI][fJ] = ' ';
 
 		if (piece.toLowerCase() === 'k') {
 			this.Kings[Index].setNewCoordinates(nI, nJ);
@@ -112,10 +90,22 @@ export class Chess {
 		}
 	}
 
+	setBoard(formerCoordinate, newCoordinates, isCastlingMove = false) {
+		const [fI, fJ] = formerCoordinate;
+		const [nI, nJ] = newCoordinates;
+		const piece = this.Board[fI][fJ];
+
+		this.Board[nI][nJ] = piece;
+		this.Board[fI][fJ] = ' ';
+
+		if (isCastlingMove) return;
+
+		this.updateChess(formerCoordinate, newCoordinates);
+	}
+
 	formulateMoves() {
 		const Index = this.whiteToMove ? 0 : 1;
 		this.legalMoves = getLegibleMoves(this.Board, this.Kings[Index]);
-		// console.log(this.legalMoves);
 	}
 
 	toggleMove() {

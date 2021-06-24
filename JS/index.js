@@ -1,7 +1,5 @@
-// import print from './print.js';
-import { Chess } from './classes.js';
+import { Chess } from './Classes/Chess.js';
 import { getPiece, isWhite } from './util.js';
-// import isDiscoveredCheck from './isDiscoveredCheck.js';
 const boardGrid = document.querySelector('.board');
 
 const FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
@@ -16,7 +14,7 @@ function formPiece(piece, i, j) {
 	pieceElement.dataset.j = j;
 	pieceElement.id = piece;
 	pieceElement.draggable = false;
-	pieceElement.style.transform = `translate(${j * 6.25}rem, ${i * 6.25}rem)`;
+	pieceElement.style.transform = `translate(${j}00%, ${i}00%)`;
 
 	return pieceElement;
 }
@@ -70,9 +68,21 @@ var pieces = document.querySelectorAll('.piece');
 var squares = document.querySelectorAll('.square');
 let selectedPiece;
 
-function move(i, j) {
+function handleRookinCastle([from, target]) {
+	var rook = document.querySelector(
+		`[data-i="${from[0]}"][data-j="${from[1]}"]`
+	);
+
+	rook.style.transform = `translate(${target[1]}00%, ${target[0]}00%)`;
+}
+
+function move(i, j, castlingMove = false) {
 	// move
-	selectedPiece.style.transform = `translate(${j * 6.25}rem, ${i * 6.25}rem)`;
+	selectedPiece.style.transform = `translate(${j}00%, ${i}00%)`;
+
+	if (castlingMove) {
+		handleRookinCastle(castlingMove);
+	}
 
 	removeCheck();
 
@@ -84,8 +94,6 @@ function move(i, j) {
 	chessMain.FENUpdate(fI, i);
 	selectedPiece.dataset.i = i;
 	selectedPiece.dataset.j = j;
-
-	chessMain.toggleMove();
 
 	presentSelectedMoves = [];
 
@@ -100,13 +108,14 @@ function move(i, j) {
 }
 
 function capture(i, j) {
-	const piece = document.querySelector(`.piece[data-i="${i}"][data-j="${j}"]`);
+	const piece = document.querySelector(
+		`.piece[data-i="${i}"][data-j="${j}"]`
+	);
 	piece.style.filter = `brightness(50%)`;
 	setTimeout(() => {
 		piece.parentNode.removeChild(piece);
 		selectedPiece.style.zIndex = 0;
 	}, 400);
-	
 }
 
 pieces.forEach((piece) => {
@@ -114,9 +123,12 @@ pieces.forEach((piece) => {
 		let i = parseInt(piece.dataset.i);
 		let j = parseInt(piece.dataset.j);
 		fflushSelected();
-		// print(chessMain.whiteToMove);
 		if (chessMain.whiteToMove !== isWhite(piece.id)) {
-			if (presentSelectedMoves.some((coor) => coor[0] === i && coor[1] === j)) {
+			if (
+				presentSelectedMoves.some(
+					(coor) => coor[0] === i && coor[1] === j
+				)
+			) {
 				piece.style.zIndex = 0;
 				selectedPiece.style.zIndex = 1;
 				capture(i, j);
@@ -140,7 +152,9 @@ squares.forEach((square) => {
 		fflushSelected();
 		let i = parseInt(square.dataset.i);
 		let j = parseInt(square.dataset.j);
-		if (presentSelectedMoves.some((coor) => coor[0] === i && coor[1] === j)) {
+		if (
+			presentSelectedMoves.some((coor) => coor[0] === i && coor[1] === j)
+		) {
 			move(i, j);
 		}
 	});
