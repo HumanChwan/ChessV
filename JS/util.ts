@@ -5,87 +5,87 @@ const aCode: number = 'a'.charCodeAt(0)
 const alphaToNumber = (file: string): number => file.charCodeAt(0) - aCode
 
 export function formCastlingRights(asString: string): CastleRights {
-	const castlingRightsAsArray: CastleRights = {
-		K: false,
-		Q: false,
-		k: false,
-		q: false,
-	}
+  const castlingRightsAsArray: CastleRights = {
+    K: false,
+    Q: false,
+    k: false,
+    q: false,
+  }
 
-	for (let i = 0; i < asString.length; ++i) {
-		castlingRightsAsArray[asString[i]] = true
-	}
+  for (let i = 0; i < asString.length; ++i) {
+    castlingRightsAsArray[asString[i]] = true
+  }
 
-	return castlingRightsAsArray
+  return castlingRightsAsArray
 }
 
 export function setBooleanMove(moveasString: string): boolean {
-	if (!'wb'.includes(moveasString)) {
-		throw new Error("AssertionFailed: move not 'w' or 'b'")
-	}
+  if (!'wb'.includes(moveasString)) {
+    throw new Error("AssertionFailed: move not 'w' or 'b'")
+  }
 
-	return moveasString === 'w'
+  return moveasString === 'w'
 }
 
 export function formCoordinatefromChessCoordinate(
-	chessCoordinate: string
+  chessCoordinate: string
 ): conditionalCoordinate {
-	if (chessCoordinate === '-') {
-		return false
-	}
+  if (chessCoordinate === '-') {
+    return false
+  }
 
-	try {
-		const coordinate: Coordinate = {
-			i: 8 - Number(chessCoordinate[1]),
-			j: alphaToNumber(chessCoordinate[0]),
-		}
+  try {
+    const coordinate: Coordinate = {
+      i: 8 - Number(chessCoordinate[1]),
+      j: alphaToNumber(chessCoordinate[0]),
+    }
 
-		return coordinate
-	} catch (e) {
-		throw new Error('Assertion Failed: Not Valid chessCoordinate')
-	}
+    return coordinate
+  } catch (e) {
+    throw new Error('Assertion Failed: Not Valid chessCoordinate')
+  }
 }
 
 export function formChessCoordinatefromCoordinate(
-	coordinate: Coordinate
+  coordinate: Coordinate
 ): string {
-	let chessCoordinate: string = ''
+  let chessCoordinate: string = ''
 
-	chessCoordinate += String.fromCharCode(coordinate.j + 'a'.charCodeAt(0))
-	chessCoordinate += 8 - coordinate.i
+  chessCoordinate += String.fromCharCode(coordinate.j + 'a'.charCodeAt(0))
+  chessCoordinate += 8 - coordinate.i
 
-	return chessCoordinate
+  return chessCoordinate
 }
 
 export const isPieceWhite = (piece: string): boolean => piece >= 'A'
 
 export function changeCase(piece: string, moved: boolean): string {
-	return moved ? piece : piece.toLowerCase()
+  return moved ? piece : piece.toLowerCase()
 }
 
 export function readCastlingRights(castleRights: CastleRights): string {
-	let castleRightsAsString: string = ''
+  let castleRightsAsString: string = ''
 
-	if (castleRights.K) {
-		castleRightsAsString += 'K'
-	}
-	if (castleRights.Q) {
-		castleRightsAsString += 'Q'
-	}
-	if (castleRights.k) {
-		castleRightsAsString += 'k'
-	}
-	if (castleRights.q) {
-		castleRightsAsString += 'q'
-	}
+  if (castleRights.K) {
+    castleRightsAsString += 'K'
+  }
+  if (castleRights.Q) {
+    castleRightsAsString += 'Q'
+  }
+  if (castleRights.k) {
+    castleRightsAsString += 'k'
+  }
+  if (castleRights.q) {
+    castleRightsAsString += 'q'
+  }
 
-	return castleRightsAsString
+  return castleRightsAsString
 }
 
 export function readenPassant(enPassantSquare: conditionalCoordinate): string {
-	if (!enPassantSquare) {
-		return '-'
-	}
+  if (!enPassantSquare) {
+    return '-'
+  }
 
-	return formChessCoordinatefromCoordinate(enPassantSquare)
+  return formChessCoordinatefromCoordinate(enPassantSquare)
 }
