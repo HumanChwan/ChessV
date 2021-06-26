@@ -7,8 +7,8 @@ export class King {
   checkOrigin: Array<Coordinate>
   hasMoved: boolean
 
-  constructor(isWhite: boolean, i: number, j: number) {
-    this.residence = { i, j }
+  constructor(isWhite: boolean, residence: Coordinate) {
+    this.residence = residence
     this.isWhite = isWhite
     this.isChecked = false
     this.checkOrigin = []

@@ -1,5 +1,6 @@
 import { CastleRights } from './Interface/CastlingRights'
 import { conditionalCoordinate, Coordinate } from './Interface/Coordinate'
+import { PieceAndMoves } from './direction'
 
 const aCode: number = 'a'.charCodeAt(0)
 const alphaToNumber = (file: string): number => file.charCodeAt(0) - aCode
@@ -57,7 +58,7 @@ export function formChessCoordinatefromCoordinate(
   return chessCoordinate
 }
 
-export const isPieceWhite = (piece: string): boolean => piece >= 'A'
+export const isPieceWhite = (piece: string): boolean => piece <= 'Z'
 
 export function changeCase(piece: string, moved: boolean): string {
   return moved ? piece : piece.toLowerCase()
@@ -88,4 +89,53 @@ export function readenPassant(enPassantSquare: conditionalCoordinate): string {
   }
 
   return formChessCoordinatefromCoordinate(enPassantSquare)
+}
+
+export const pawnAtBaseRank = (rank: number, move: boolean): boolean =>
+  move ? rank === 6 : rank === 1
+
+export const isValidCoordinateR = (rank: number): boolean =>
+  0 <= rank && rank < 8
+
+export const isValidCoordinateF = (file: number): boolean =>
+  0 <= file && file < 8
+
+export const isValidCoordinateRF = (rank: number, file: number): boolean =>
+  0 <= rank && rank < 8 && 0 <= file && file < 8
+
+export function isValidCoordinate(coordinate: Coordinate): boolean {
+  return (
+    0 <= coordinate.i &&
+    coordinate.i < 8 &&
+    0 <= coordinate.j &&
+    coordinate.j < 8
+  )
+}
+
+export function CompareCoordinates(A: Coordinate, B: Coordinate): boolean {
+  return A.i === B.i && A.j === B.j
+}
+
+export function inValidQRBattackConfiguration(
+  deltaI: number,
+  deltaJ: number
+): boolean {
+  return deltaI * deltaJ !== 0 && Math.abs(deltaI) !== Math.abs(deltaJ)
+}
+
+export function pawnAtEnemyBaseRank(rank: number, toMove: boolean): boolean {
+  return toMove ? rank === 0 : rank === 7
+}
+
+export function changeDirectionCase(
+  PaM: PieceAndMoves,
+  toMove: boolean
+): PieceAndMoves {
+  if (toMove) {
+    return PaM
+  }
+
+  PaM = { ...PaM, piece: PaM.piece.map((piece) => piece.toLowerCase()) }
+
+  return PaM
 }

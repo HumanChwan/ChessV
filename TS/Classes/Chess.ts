@@ -1,10 +1,12 @@
+import formulateLegalMoves from '../formulateMoves'
+import formulateMoves from '../formulateMoves'
 import { CastleRights } from '../Interface/CastlingRights'
 import {
   conditionalCoordinate,
   Coordinate,
   OriginToTarget,
 } from '../Interface/Coordinate'
-import { KINGS } from '../Interface/general'
+import { KINGS, PIECEMOVE } from '../Interface/general'
 import {
   changeCase,
   formCastlingRights,
@@ -14,7 +16,7 @@ import {
   setBooleanMove,
 } from '../util'
 import { King } from './King'
-import { Move } from './Move'
+import { Move } from '../Interface/Move'
 
 export class Chess {
   FEN: string
@@ -27,6 +29,7 @@ export class Chess {
   MoveCount: number
   Kings: KINGS
   Board: Array<Array<string>>
+  Moves: Array<PIECEMOVE>
 
   // FEN : rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR   w    KQkq     -     0        1
   //              BOARD                                  M     CR     En   Fifty  MoveCount
@@ -40,17 +43,20 @@ export class Chess {
 
     this.toMove = setBooleanMove(this.FENAsList[1])
 
-    this.castlingRights = formCastlingRights(this.FENAsList[1])
+    this.castlingRights = formCastlingRights(this.FENAsList[2])
 
-    this.enPassantSquare = formCoordinatefromChessCoordinate(this.FENAsList[2])
+    this.enPassantSquare = formCoordinatefromChessCoordinate(this.FENAsList[3])
 
-    this.fiftyCountRule = 0
+    this.fiftyCountRule = Number(this.FENAsList[4])
 
-    this.MoveCount = 1
-
-    this.Kings = { white: new King(true, 7, 4), black: new King(false, 0, 4) }
+    this.MoveCount = Number(this.FENAsList[5])
 
     this.formulateBoard()
+
+    this.Kings = {
+      white: new King(true, this.findKing(true)),
+      black: new King(false, this.findKing(false)),
+    }
 
     this.processMoves()
   }
@@ -73,6 +79,13 @@ export class Chess {
 
   processMoves(): void {
     // call functions probably lol
+    this.Moves = formulateLegalMoves(
+      this.Board,
+      this.Kings,
+      this.toMove,
+      this.enPassantSquare,
+      this.castlingRights
+    )
   }
 
   invertMoves(originCoordinate: Coordinate, move: Move): void {
@@ -107,8 +120,8 @@ export class Chess {
       this.MoveCount++
     }
 
-    if (move.enPassantSquareFormation) {
-      this.enPassantSquare = move.enPassantSquareFormation
+    if (move.enPassantSquare) {
+      this.enPassantSquare = move.enPassantSquare
     }
 
     if (['k', 'K'].includes(piecePlayed)) {
@@ -248,5 +261,17 @@ export class Chess {
       this.fiftyCountRule,
       this.MoveCount,
     ].join(' ')
+  }
+
+  findKing(kingSide: boolean): Coordinate {
+    const King = kingSide ? 'K' : 'k'
+
+    for (let i = 0; i < 8; ++i) {
+      for (let j = 0; j < 8; ++j) {
+        if (this.Board[i][j] === King) {
+          return { i, j }
+        }
+      }
+    }
   }
 }
