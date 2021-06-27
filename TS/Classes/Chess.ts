@@ -1,5 +1,4 @@
 import formulateLegalMoves from '../MoveFormation/formulateMoves'
-import formulateMoves from '../MoveFormation/formulateMoves'
 import { CastleRights } from '../Interface/CastlingRights'
 import {
   conditionalCoordinate,
@@ -8,15 +7,22 @@ import {
 } from '../Interface/Coordinate'
 import { KINGS, PIECEMOVE } from '../Interface/general'
 import {
+  addCoordinates,
   changeCase,
+  CompareCoordinates,
+  customisedPawnMove,
+  extendedDirection,
   formCastlingRights,
   formCoordinatefromChessCoordinate,
+  isValidCoordinate,
   readCastlingRights,
   readenPassant,
   setBooleanMove,
+  subtractCoordinates,
 } from '../util'
 import { King } from './King'
 import { Move } from '../Interface/Move'
+import { BISHOP, KNIGHT, PieceAndMoves, ROOK } from '../MoveFormation/direction'
 
 export class Chess {
   FEN: string
@@ -141,8 +147,21 @@ export class Chess {
       this.removeCastlingRightscausedByRookCaptue(!this.toMove, move.target)
     }
 
+    if (move.discoverCheckData) {
+      this.Kings[this.toMove ? 'white' : 'black'].newCheckOrigin(
+        move.discoverCheckData
+      )
+    }
+
+    if (this.canCheck(move.target)) {
+      this.Kings[this.toMove ? 'white' : 'black'].newCheckOrigin(move.target)
+    }
     this.updateBoardAsFEN(originCoordinate.i, move.target.i)
     this.updateFEN()
+  }
+
+  atCoordinate(coordinate: Coordinate): string {
+    return this.Board[coordinate.i][coordinate.j]
   }
 
   handleCastleMove(rookMove: OriginToTarget) {
@@ -283,6 +302,61 @@ export class Chess {
           return { i, j }
         }
       }
+    }
+  }
+
+  getCheckData(origin: Coordinate, pieceMove: PieceAndMoves): boolean {
+    const vector: Coordinate = subtractCoordinates(
+      origin,
+      this.Kings[this.toMove ? 'white' : 'black'].residence
+    )
+
+    for (let x = 0; x < pieceMove.directions.length; ++x) {
+      if (!extendedDirection(pieceMove.directions[x], vector)) {
+        continue
+      }
+      let iterativeCoordinate: Coordinate = addCoordinates(
+        origin,
+        pieceMove.directions[x]
+      )
+      let depth = pieceMove.depth
+      while (depth-- && isValidCoordinate(iterativeCoordinate)) {
+        if (
+          CompareCoordinates(
+            this.Kings[this.toMove ? 'white' : 'black'].residence,
+            iterativeCoordinate
+          )
+        ) {
+          return true
+        }
+
+        iterativeCoordinate = addCoordinates(
+          iterativeCoordinate,
+          pieceMove.directions[x]
+        )
+      }
+    }
+
+    return false
+  }
+
+  canCheck(shiftedOrigin: Coordinate): boolean {
+    switch (this.atCoordinate(shiftedOrigin).toLowerCase()) {
+      case 'r':
+        return this.getCheckData(shiftedOrigin, ROOK)
+      case 'n':
+        return this.getCheckData(shiftedOrigin, KNIGHT)
+      case 'b':
+        return this.getCheckData(shiftedOrigin, BISHOP)
+      case 'k':
+        return false
+      case 'q':
+        return (
+          this.getCheckData(shiftedOrigin, BISHOP) ||
+          this.getCheckData(shiftedOrigin, ROOK)
+        )
+      case 'p':
+        return this.getCheckData(shiftedOrigin, customisedPawnMove(this.toMove))
     }
   }
 }

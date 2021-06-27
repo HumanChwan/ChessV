@@ -101,7 +101,9 @@ function formMovesCheckedConfiguration(): Array<PIECEMOVE> {
         LegalMoves,
         atCoordinate(iterativeCoordinate) !== ' '
       )
-
+      if (atCoordinate(iterativeCoordinate) !== ' ') {
+        break
+      }
       iterativeCoordinate = addCoordinates(iterativeCoordinate, unitVector)
     }
   }

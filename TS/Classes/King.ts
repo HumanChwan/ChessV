@@ -31,9 +31,9 @@ export class King {
     this.checkOrigin = []
   }
 
-  newCheckOrigin(i: number, j: number) {
+  newCheckOrigin(checkOrigin: Coordinate) {
     this.isChecked = true
-    this.checkOrigin.push({ i, j })
+    this.checkOrigin.push({ ...checkOrigin })
   }
 
   nullifyCastleRights() {

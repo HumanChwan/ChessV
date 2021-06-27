@@ -1,10 +1,10 @@
 import { Chess } from './Classes/Chess'
 
 const CookieChess: Chess = new Chess(
-  'rnbqkbnr/p3pppp/8/2pp2B1/p1PP4/N7/PP2PPPP/R3KBNR w KQkq - 0 6'
+  'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 )
 
-console.log(CookieChess.Moves)
+// console.log(CookieChess.Moves)
 
 declare var require: any
 var fs = require('fs')
@@ -34,6 +34,16 @@ var fs = require('fs')
 
 console.log(CookieChess.Board)
  */
+CookieChess.invertMoves(
+  {
+    i: 7,
+    j: 5,
+  },
+  { target: { i: 3, j: 1 }, discoverCheckData: false }
+)
+// console.log(CookieChess.Kings.black, CookieChess.Kings.white)
+console.log(CookieChess.Moves)
+
 const data = JSON.stringify(CookieChess.Moves)
 
 // write JSON string to a file

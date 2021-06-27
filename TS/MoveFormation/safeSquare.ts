@@ -1,4 +1,4 @@
-import { BISHOP, KING, PieceAndMoves, ROOK } from './direction'
+import { BISHOP, KING, KNIGHT, PieceAndMoves, ROOK } from './direction'
 import { atCoordinate, getMove } from './formulateMoves'
 import { Coordinate } from '../Interface/Coordinate'
 import {
@@ -49,6 +49,10 @@ export default function safeSquare(
   // START: King
   if (unsafe(location, changeDirectionCase(KING, !newToMove))) return false
   // END: King
+
+  // START: Knight
+  if (unsafe(location, changeDirectionCase(KNIGHT, !newToMove))) return false
+  // END: Knight
 
   // START: Pawn
   const moveDirection: number = newToMove ? -1 : 1

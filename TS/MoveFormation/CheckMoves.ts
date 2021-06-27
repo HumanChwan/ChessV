@@ -10,7 +10,7 @@ import {
   subtractCoordinates,
   unitify,
 } from '../util'
-import { BISHOP, KING, PieceAndMoves, ROOK } from './direction'
+import { BISHOP, KING, KNIGHT, PieceAndMoves, ROOK } from './direction'
 import {
   atCoordinate,
   getDiscoveryData,
@@ -32,7 +32,7 @@ function appendToLegalMoves(
 
   LegalMoves.push({
     origin: { ...origin },
-    moves: [MoveObj],
+    moves: [{ ...MoveObj }],
   })
 }
 
@@ -43,12 +43,10 @@ function defend(
   isCapture: boolean
 ): boolean {
   const homeKing: string = getMove() ? 'K' : 'k'
-
   for (let x: number = 0; x < MoveDirection.directions.length; ++x) {
     let depth: number = MoveDirection.depth
     const unitDirection: Coordinate = MoveDirection.directions[x]
     let iterativeCoordinate: Coordinate = addCoordinates(origin, unitDirection)
-
     while (depth-- && isValidCoordinate(iterativeCoordinate)) {
       const spaceOccupation: string = atCoordinate(iterativeCoordinate)
       if (spaceOccupation !== ' ' && spaceOccupation !== homeKing) {
@@ -93,6 +91,10 @@ export function defendAbleCoordinate(
   // START: King
   defend(origin, changeDirectionCase(KING, getMove()), LegalMoves, isCapture)
   // END: King
+
+  // START: Knight
+  defend(origin, changeDirectionCase(KNIGHT, getMove()), LegalMoves, isCapture)
+  // END: Knight
 
   // START: Pawn
   const moveDirection: number = getMove() ? 1 : -1
