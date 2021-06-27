@@ -65,3 +65,22 @@ export const KING: PieceAndMoves = {
     { i: -1, j: -1 },
   ],
 }
+export const PAWN: PieceAndMoves = {
+  piece: ['P'],
+  depth: 1,
+  directions: [
+    { i: -1, j: -1 },
+    { i: -1, j: 1 },
+  ],
+}
+
+export const KingMoveVectors: Array<Coordinate> = [
+  { i: 1, j: 0 },
+  { i: -1, j: 0 },
+  { i: 1, j: -1 },
+  { i: -1, j: -1 },
+  { i: 0, j: 1 },
+  { i: 0, j: -1 },
+  { i: -1, j: 1 },
+  { i: 1, j: 1 },
+]

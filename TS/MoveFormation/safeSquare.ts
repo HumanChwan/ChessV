@@ -1,5 +1,5 @@
 import { BISHOP, KING, PieceAndMoves, ROOK } from './direction'
-import { atCoordinate } from './formulateMoves'
+import { atCoordinate, getMove } from './formulateMoves'
 import { Coordinate } from '../Interface/Coordinate'
 import {
   changeDirectionCase,
@@ -7,10 +7,8 @@ import {
   isValidCoordinateRF,
 } from '../util'
 
-let toMove: boolean
-
 function unsafe(location: Coordinate, MoveDirection: PieceAndMoves): boolean {
-  const homeKing: string = toMove ? 'K' : 'k'
+  const homeKing: string = getMove() ? 'K' : 'k'
 
   for (let x: number = 0; x < MoveDirection.directions.length; ++x) {
     let depth: number = MoveDirection.depth
@@ -36,22 +34,25 @@ function unsafe(location: Coordinate, MoveDirection: PieceAndMoves): boolean {
   return false
 }
 
-export function safeSquare(location: Coordinate, newToMove: boolean): boolean {
+export default function safeSquare(
+  location: Coordinate,
+  newToMove: boolean
+): boolean {
   // START: bishops and queen(s)
-  if (unsafe(location, changeDirectionCase(BISHOP, !toMove))) return false
+  if (unsafe(location, changeDirectionCase(BISHOP, !newToMove))) return false
   // END: bishops and queen(s)
 
   // START: rooks and queen(s)
-  if (unsafe(location, changeDirectionCase(ROOK, !toMove))) return false
+  if (unsafe(location, changeDirectionCase(ROOK, !newToMove))) return false
   // END: rooks and queen(s)
 
   // START: King
-  if (unsafe(location, changeDirectionCase(KING, !toMove))) return false
+  if (unsafe(location, changeDirectionCase(KING, !newToMove))) return false
   // END: King
 
   // START: Pawn
-  const moveDirection: number = toMove ? -1 : 1
-  const pawn: string = toMove ? 'p' : 'P'
+  const moveDirection: number = newToMove ? -1 : 1
+  const pawn: string = newToMove ? 'p' : 'P'
 
   if (
     isValidCoordinateRF(location.i + moveDirection, location.j - 1) &&

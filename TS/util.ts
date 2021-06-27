@@ -135,7 +135,17 @@ export function changeDirectionCase(
     return PaM
   }
 
-  PaM = { ...PaM, piece: PaM.piece.map((piece) => piece.toLowerCase()) }
+  return { ...PaM, piece: PaM.piece.map((piece) => piece.toLowerCase()) }
+}
 
-  return PaM
+export function addCoordinates(A: Coordinate, B: Coordinate): Coordinate {
+  return { i: A.i + B.i, j: A.j + B.j }
+}
+
+export function subtractCoordinates(A: Coordinate, B: Coordinate): Coordinate {
+  return { i: A.i - B.i, j: A.j - B.j }
+}
+
+export function unitify(A: Coordinate): Coordinate {
+  return { i: Math.sign(A.i), j: Math.sign(A.j) }
 }

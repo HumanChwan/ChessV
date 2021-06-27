@@ -38,7 +38,7 @@ export default function pawnMove(
       return false
     }
   }
-  const deltaJ: number = getDeltaJ(origin.j)
+  const unitDeltaJ: number = getDeltaJ(origin.j)
   const possibleDiscoveredCheck: conditionalCoordinate =
     getDiscoveryData(origin)
 
@@ -47,7 +47,7 @@ export default function pawnMove(
     allowedDirections.inFile &&
     atCoordinate({ i: forwardRank, j: origin.j }) === ' '
   ) {
-    const discoveryData = deltaJ === 0 ? false : possibleDiscoveredCheck
+    const discoveryData = unitDeltaJ === 0 ? false : possibleDiscoveredCheck
 
     // basic pawnPUSH
     pawnMoves.moves.push({
@@ -85,7 +85,7 @@ export default function pawnMove(
     isPieceWhite(spaceOccupation) !== getMove()
   ) {
     const discoveryData =
-      deltaJ === -moveDirection ? false : possibleDiscoveredCheck
+      unitDeltaJ === -moveDirection ? false : possibleDiscoveredCheck
 
     pawnMoves.moves.push({
       target: { i: origin.i + moveDirection, j: origin.j - moveDirection },
@@ -112,7 +112,7 @@ export default function pawnMove(
     isPieceWhite(spaceOccupation) !== getMove()
   ) {
     const discoveryData =
-      deltaJ === moveDirection ? false : possibleDiscoveredCheck
+      unitDeltaJ === moveDirection ? false : possibleDiscoveredCheck
 
     pawnMoves.moves.push({
       target: { i: origin.i + moveDirection, j: origin.j + moveDirection },

@@ -4,3 +4,8 @@ export interface CastleRights {
   k: boolean
   q: boolean
 }
+
+export interface KingsCastleRights {
+  KingSide: boolean
+  QueenSide: boolean
+}

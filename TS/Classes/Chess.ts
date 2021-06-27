@@ -54,8 +54,14 @@ export class Chess {
     this.formulateBoard()
 
     this.Kings = {
-      white: new King(true, this.findKing(true)),
-      black: new King(false, this.findKing(false)),
+      white: new King(true, this.findKing(true), {
+        KingSide: this.castlingRights.K,
+        QueenSide: this.castlingRights.Q,
+      }),
+      black: new King(false, this.findKing(false), {
+        KingSide: this.castlingRights.k,
+        QueenSide: this.castlingRights.q,
+      }),
     }
 
     this.processMoves()
@@ -83,8 +89,7 @@ export class Chess {
       this.Board,
       this.Kings,
       this.toMove,
-      this.enPassantSquare,
-      this.castlingRights
+      this.enPassantSquare
     )
   }
 
@@ -154,6 +159,7 @@ export class Chess {
         return
       }
       // black has lost its castling rights
+      this.Kings.black.nullifyCastleRights()
       this.castlingRights.k = false
       this.castlingRights.q = false
     } else {
@@ -161,6 +167,7 @@ export class Chess {
         return
       }
       // white has lost its castling rights
+      this.Kings.white.nullifyCastleRights()
       this.castlingRights.K = false
       this.castlingRights.Q = false
     }
@@ -175,8 +182,10 @@ export class Chess {
         return
       }
       if (originCoordinates.j === 7) {
+        this.Kings.white.removeKingSideCastle()
         this.castlingRights.K = false
       } else if (originCoordinates.j === 0) {
+        this.Kings.white.removeQueenSideCastle()
         this.castlingRights.Q = false
       }
     } else {
@@ -184,8 +193,10 @@ export class Chess {
         return
       }
       if (originCoordinates.j === 7) {
+        this.Kings.black.removeKingSideCastle()
         this.castlingRights.k = false
       } else if (originCoordinates.j === 0) {
+        this.Kings.black.removeQueenSideCastle()
         this.castlingRights.q = false
       }
     }

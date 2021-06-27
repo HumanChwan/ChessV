@@ -1,3 +1,4 @@
-*.json
+moves.json
+package-lock.json
 JS
 build
