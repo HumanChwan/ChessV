@@ -1,6 +1,6 @@
 import { CastleRights } from './Interface/CastlingRights'
 import { conditionalCoordinate, Coordinate } from './Interface/Coordinate'
-import { PieceAndMoves } from './direction'
+import { PieceAndMoves } from './MoveFormation/direction'
 
 const aCode: number = 'a'.charCodeAt(0)
 const alphaToNumber = (file: string): number => file.charCodeAt(0) - aCode

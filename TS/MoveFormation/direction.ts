@@ -1,4 +1,4 @@
-import { Coordinate } from './Interface/Coordinate'
+import { Coordinate } from '../Interface/Coordinate'
 
 export const knightMoveVectors: Array<Coordinate> = [
   { i: 1, j: 2 },

@@ -1,5 +1,5 @@
-import formulateLegalMoves from '../formulateMoves'
-import formulateMoves from '../formulateMoves'
+import formulateLegalMoves from '../MoveFormation/formulateMoves'
+import formulateMoves from '../MoveFormation/formulateMoves'
 import { CastleRights } from '../Interface/CastlingRights'
 import {
   conditionalCoordinate,
