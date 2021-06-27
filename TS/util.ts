@@ -1,6 +1,6 @@
 import { CastleRights } from './Interface/CastlingRights'
 import { conditionalCoordinate, Coordinate } from './Interface/Coordinate'
-import { PieceAndMoves } from './MoveFormation/direction'
+import { PAWN, PieceAndMoves } from './MoveFormation/direction'
 
 const aCode: number = 'a'.charCodeAt(0)
 const alphaToNumber = (file: string): number => file.charCodeAt(0) - aCode
@@ -148,4 +148,32 @@ export function subtractCoordinates(A: Coordinate, B: Coordinate): Coordinate {
 
 export function unitify(A: Coordinate): Coordinate {
   return { i: Math.sign(A.i), j: Math.sign(A.j) }
+}
+
+export function customisedPawnMove(toMove: boolean): PieceAndMoves {
+  if (toMove) {
+    return PAWN
+  } else {
+    return {
+      ...PAWN,
+      directions: PAWN.directions.map((direction) => {
+        return { i: 1, j: direction.j }
+      }),
+    }
+  }
+}
+
+export function extendedDirection(Big: Coordinate, Small: Coordinate) {
+  if (Big.i * Small.i === 0) {
+    return (
+      Big.i === 0 && Small.i === 0 && Math.sign(Big.j) === Math.sign(Small.j)
+    )
+  }
+  if (Big.j * Small.j === 0) {
+    return (
+      Big.j === 0 && Small.j === 0 && Math.sign(Big.i) === Math.sign(Small.i)
+    )
+  }
+
+  return Big.i * Small.j === Big.j * Small.i
 }

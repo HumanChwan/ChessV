@@ -25,13 +25,13 @@ function appendToLegalMoves(
 ) {
   for (let x = 0; x < LegalMoves.length; ++x) {
     if (CompareCoordinates(LegalMoves[x].origin, origin)) {
-      LegalMoves[x].moves.push(MoveObj)
+      LegalMoves[x].moves.push({ ...MoveObj })
       return
     }
   }
 
   LegalMoves.push({
-    origin: origin,
+    origin: { ...origin },
     moves: [MoveObj],
   })
 }
@@ -56,7 +56,7 @@ function defend(
           appendToLegalMoves(
             LegalMoves,
             {
-              target: origin,
+              target: { ...origin },
               discoverCheckData: CompareCoordinates(
                 getUnitDelta(iterativeCoordinate),
                 unitify(subtractCoordinates(iterativeCoordinate, origin))

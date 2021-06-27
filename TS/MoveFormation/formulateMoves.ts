@@ -5,6 +5,8 @@ import { DirectionAvailable, KINGS, PIECEMOVE } from '../Interface/general'
 import {
   addCoordinates,
   CompareCoordinates,
+  customisedPawnMove,
+  extendedDirection,
   inValidQRBattackConfiguration,
   isPieceWhite,
   isValidCoordinate,
@@ -18,6 +20,7 @@ import queenMove from './PieceMoves/QueenMove'
 import knightMove from './PieceMoves/KnightMove'
 import kingMove from './PieceMoves/KingMove'
 import { defendAbleCoordinate } from './CheckMoves'
+import { BISHOP, KNIGHT, PAWN, PieceAndMoves, ROOK } from './direction'
 let HomeKing: King
 let AwayKing: King
 let Board: Array<Array<string>>

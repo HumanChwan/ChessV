@@ -6,7 +6,6 @@ import {
   CompareCoordinates,
   isPieceWhite,
   isValidCoordinate,
-  subtractCoordinates,
 } from '../../util'
 import { KingMoveVectors } from '../direction'
 import {

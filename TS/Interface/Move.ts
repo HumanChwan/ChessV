@@ -33,5 +33,5 @@ export interface Move {
   discoverCheckData?: conditionalCoordinate
 
   // if a the particular move gives Check to the Away King
-  checks?: conditionalCoordinate
+  checks?: boolean
 }
