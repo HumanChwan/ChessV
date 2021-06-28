@@ -1,47 +1,28 @@
 import { Chess } from './Classes/Chess'
 
-const CookieChess: Chess = new Chess(
-  'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
-)
+const CookieChess: Chess = new Chess('5k2/8/8/8/8/8/8/4K2R w K - 0 1')
 
 // console.log(CookieChess.Moves)
 
 declare var require: any
 var fs = require('fs')
 
-/* CookieChess.invertMoves(
+console.log(CookieChess.Moves)
+
+CookieChess.invertMoves(
   {
     i: 7,
     j: 4,
   },
   {
-    target: {
-      i: 7,
-      j: 2,
-    },
+    target: { i: 7, j: 6 },
     castlingMove: {
-      origin: {
-        i: 7,
-        j: 0,
-      },
-      target: {
-        i: 7,
-        j: 3,
-      },
+      origin: { i: 7, j: 7 },
+      target: { i: 7, j: 5 },
     },
   }
 )
-
-console.log(CookieChess.Board)
- */
-CookieChess.invertMoves(
-  {
-    i: 7,
-    j: 5,
-  },
-  { target: { i: 3, j: 1 }, discoverCheckData: false }
-)
-// console.log(CookieChess.Kings.black, CookieChess.Kings.white)
+console.log(CookieChess.Kings)
 console.log(CookieChess.Moves)
 
 const data = JSON.stringify(CookieChess.Moves)
@@ -96,3 +77,37 @@ fs.writeFile('moves.json', data, (err) => {
   ]
 }
 */
+
+/* CookieChess.invertMoves(
+  {
+    i: 7,
+    j: 4,
+  },
+  {
+    target: {
+      i: 7,
+      j: 2,
+    },
+    castlingMove: {
+      origin: {
+        i: 7,
+        j: 0,
+      },
+      target: {
+        i: 7,
+        j: 3,
+      },
+    },
+  }
+)
+
+console.log(CookieChess.Board)
+ */
+// CookieChess.invertMoves(
+//   {
+//     i: 7,
+//     j: 5,
+//   },
+//   { target: { i: 3, j: 1 }, discoverCheckData: false }
+// )
+// console.log(CookieChess.Kings.black, CookieChess.Kings.white)

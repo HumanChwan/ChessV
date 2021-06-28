@@ -115,6 +115,11 @@ export class Chess {
 
     if (move.castlingMove) {
       this.handleCastleMove(move.castlingMove)
+      if (this.canCheck(move.castlingMove.target)) {
+        this.Kings[this.toMove ? 'white' : 'black'].newCheckOrigin(
+          move.castlingMove.target
+        )
+      }
     } else if (move.attacksenPassantSquare) {
       this.handleEnPassantCapture(move.attacksenPassantSquare)
     } else if (move.isPromotion) {
@@ -306,10 +311,9 @@ export class Chess {
   }
 
   getCheckData(origin: Coordinate, pieceMove: PieceAndMoves): boolean {
-    const vector: Coordinate = subtractCoordinates(
-      origin,
+    const enemyCoordinate: Coordinate =
       this.Kings[this.toMove ? 'white' : 'black'].residence
-    )
+    const vector: Coordinate = subtractCoordinates(enemyCoordinate, origin)
 
     for (let x = 0; x < pieceMove.directions.length; ++x) {
       if (!extendedDirection(pieceMove.directions[x], vector)) {
@@ -321,12 +325,7 @@ export class Chess {
       )
       let depth = pieceMove.depth
       while (depth-- && isValidCoordinate(iterativeCoordinate)) {
-        if (
-          CompareCoordinates(
-            this.Kings[this.toMove ? 'white' : 'black'].residence,
-            iterativeCoordinate
-          )
-        ) {
+        if (CompareCoordinates(enemyCoordinate, iterativeCoordinate)) {
           return true
         }
 
